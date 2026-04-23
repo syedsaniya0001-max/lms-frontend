@@ -7,6 +7,6 @@ import Main from './LMS_PROJECT_REACT/Main'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <Main/>
   </StrictMode>,
 )
