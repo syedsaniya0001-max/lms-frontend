@@ -68,6 +68,7 @@ const Home = () => {
         article {
           background-color: rgba(240, 248, 255, 0.9);
           font-size: 25px;
+          color:black;
           border-radius: 25px;
           padding: 20px;
           margin: 50px 20px;
