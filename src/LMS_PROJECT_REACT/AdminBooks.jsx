@@ -1,28 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../api/config';
+
 const AdminBooks = () => {
     const [books, setBooks] = useState([]);
     const [form, setForm] = useState({ name: '', author: '', code: '', img: '' });
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const BOOKS_PER_PAGE = 10;
 
     const fetchBooks = async () => {
         try {
-            // const res = await axios.get(`${API_BASE_URL}/api/books`);
-            // Ensure you use ` (backticks) and NOT ' (single quotes)
+            setLoading(true);
+            // Check cache first (cache for 3 minutes for admin)
+            const cached = localStorage.getItem('adminBooksCache');
+            const cacheTime = localStorage.getItem('adminBooksCacheTime');
+            const now = Date.now();
+            
+            if (cached && cacheTime && (now - parseInt(cacheTime)) < 3 * 60 * 1000) {
+              setBooks(JSON.parse(cached));
+              setLoading(false);
+              return;
+            }
+
             const res = await axios.get(`${API_BASE_URL}/api/books`);
             
             // CRITICAL FIX: Normalize data on fetch so buttons don't reset on refresh
-            // Handle cases where isNewArrival might be missing, string, or boolean
             const normalized = res.data.map(b => ({
                 ...b,
                 isNewArrival: b.isNewArrival === true || String(b.isNewArrival) === "true",
                 addedDate: b.addedDate || ""
             }));
-            console.log("Normalized books:", normalized);
+            
             setBooks(normalized);
+            // Cache results
+            localStorage.setItem('adminBooksCache', JSON.stringify(normalized));
+            localStorage.setItem('adminBooksCacheTime', now.toString());
         } catch (err) { 
             console.error("Error fetching books:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -100,24 +118,24 @@ const handleIssue = async (book) => {
     const due = new Date();
     due.setDate(today.getDate() + 7);
 
-    // 1. SAVE TO DATABASE HISTORY
-    await axios.post(`${API_BASE_URL}/api/history`, {
-        type: "issue",
-        book: book.name,
-        student: student,
-        date: today.toLocaleDateString()
-    });
+    try {
+            await axios.post(`${API_BASE_URL}/api/history`, {
+                type: "issue",
+                book: book.name,
+                student: student,
+                date: today.toLocaleDateString()
+            });
 
-    // 2. UPDATE BOOK STATUS
-    await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
-        ...book,
-        status: "Issued",
-        studentName: student,
-        issueDate: today.toLocaleDateString(),
-        dueDate: due.toLocaleDateString()
-    });
-    fetchBooks();
-};
+            await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
+                status: "Issued",
+                studentName: student,
+                issueDate: today.toLocaleDateString(),
+                dueDate: due.toLocaleDateString()
+            });
+            fetchBooks();
+        } catch (err) { alert("Issue failed!"); }
+    };
+
     const handleReturn = async (book) => {
         let fine = 0;
         if (book.dueDate) {
@@ -127,23 +145,27 @@ const handleIssue = async (book) => {
             const lateDays = Math.floor(diff / (1000 * 60 * 60 * 24));
             if (lateDays > 0) {
                 fine = lateDays * 10;
-                alert("Late Return! Fine: ₹" + fine);
             }
         }
 
-        // 1. SAVE TO DATABASE HISTORY
-    await axios.post(`${API_BASE_URL}/api/history`, {
-        type: "return",
-        book: book.name,
-        student: book.studentName,
-        date: new Date().toLocaleDateString()
-    });
+        try {
+            await axios.post(`${API_BASE_URL}/api/history`, {
+                type: "return",
+                book: book.name,
+                student: book.studentName,
+                date: new Date().toLocaleDateString()
+            });
 
-    // 2. UPDATE BOOK STATUS
-    await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
-        ...book, status: "Available", studentName: "", issueDate: "", dueDate: "", fine: 0
-    });
-    fetchBooks();
+            await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
+                status: "Available",
+                studentName: "",
+                issueDate: "",
+                dueDate: "",
+                fine: 0
+            });
+            fetchBooks();
+            if (fine > 0) alert("Late Return! Fine: ₹" + fine);
+        } catch (err) { alert("Return failed!"); }
     };
 
 const handleEdit = async (book) => {
@@ -165,6 +187,13 @@ const handleEdit = async (book) => {
         b.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         b.code.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Pagination
+    const paginatedBooks = filteredBooks.slice(
+        (currentPage - 1) * BOOKS_PER_PAGE,
+        currentPage * BOOKS_PER_PAGE
+    );
+    const totalPages = Math.ceil(filteredBooks.length / BOOKS_PER_PAGE);
 
     return (
         <div style={{ backgroundColor: '#1e40af', minHeight: '100vh', padding: '20px' }}>
@@ -191,83 +220,123 @@ const handleEdit = async (book) => {
             <h1>📚 BOOKS 📚</h1>
 
             <div className="main-dash">
-                <div className="container"><h3>Total Books</h3><p>{books.length}</p></div>
-                <div className="container"><h3>Issued</h3><p>{books.filter(b => b.status === "Issued").length}</p></div>
-                <div className="container"><h3>Returned</h3><p>{books.filter(b => b.status === "Available").length}</p></div>
-            </div>
+    <div className="container">
+        <h3>Total Books</h3>
+        <p>{books.length}</p>
+    </div>
+    <div className="container">
+        <h3>Issued</h3>
+        <p>{books.filter(b => b.status === "Issued").length}</p>
+    </div>
+    <div className="container">
+        <h3>Available</h3>
+        <p>{books.filter(b => b.status === "Available").length}</p>
+    </div>
+</div>
 
             <div style={{ textAlign: 'right', marginBottom: '20px' }}>
                 <input 
                     style={{ padding: '10px', width: '300px', borderRadius: '5px', border: 'none' }}
                     placeholder="Search by Book, Author, or Code..." 
-                    onChange={e => setSearchTerm(e.target.value)} 
+                    onChange={e => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1);
+                    }}
                 />
             </div>
 
             <div style={{ textAlign: 'center', marginBottom: '30px', background: 'aliceblue', padding: '20px', borderRadius: '10px' }}>
-                <input placeholder="Book Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
-                <input placeholder="Author Name" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
-                <input placeholder="Book Code" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
-                <input type="file" onChange={e => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(e.target.files[0]);
-                    reader.onloadend = () => setForm({ ...form, img: reader.result });
-                }} style={{ margin: '5px' }} />
-                <button className="add-btn" onClick={handleAddBook}>Add Book</button>
-            </div>
-                <div style={{ backgroundColor: '#1e40af', minHeight: '100vh', padding: '20px', color: 'white' }}>
+    <input placeholder="Book Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
+    <input placeholder="Author Name" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
+    <input placeholder="Book Code" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
+    
+    <input type="file" onChange={e => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onloadend = () => setForm({ ...form, img: reader.result });
+        }
+    }} style={{ margin: '5px' }} />
 
+    <button className="add-btn" onClick={handleAddBook} style={{ background: 'green', color: 'white', padding: '10px' }}>
+        Add Book
+    </button>
+</div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Cover</th>
-                        <th>Book Name</th>
-                        <th>Author</th>
-                        <th>Code</th>
-                        <th>Status</th>
-                        <th>Student</th>
-                        <th>Issue Date</th>
-                        <th>Due Date</th>
-                        <th>Fine</th>
-                        <th>Actions</th>
+{/* Loading state wrapper - table inside */}
+{loading ? (
+    <div style={{ textAlign: 'center', padding: '50px', color: 'white', fontSize: '18px' }}>
+        Loading books...
+    </div>
+) : (
+    <>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cover</th>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Code</th>
+                    <th>Status</th>
+                    <th>Student</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Fine</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {paginatedBooks.map(b => (
+                    <tr key={b._id}>
+                        <td><img src={b.cover} className="book-cover" alt="cover" loading="lazy" /></td>
+                        <td>{b.name}</td>
+                        <td>{b.author}</td>
+                        <td>{b.code}</td>
+                        <td>{b.status}</td>
+                        <td>{b.studentName || "-"}</td>
+                        <td>{b.issueDate || "-"}</td>
+                        <td>{b.dueDate || "-"}</td>
+                        <td>₹{b.fine || 0}</td>
+                        <td>
+                            <button className="issue" onClick={() => handleIssue(b)}>Issue</button>
+                            <button className="return" onClick={() => handleReturn(b)}>Return</button>
+                            <button 
+                                className="arrival-btn" 
+                                style={{ backgroundColor: b.isNewArrival ? '#ef4444' : '#a855f7' }}
+                                onClick={() => toggleNewArrival(b)}
+                            >
+                                {b.isNewArrival ? "Remove New" : "Set New"}
+                            </button>
+                            <button className="edit" onClick={() => handleEdit(b)}>Edit</button>
+                            <button className="delete" onClick={async () => { if(window.confirm("Delete?")) { await axios.delete(`${API_BASE_URL}/api/books/${b._id}`); fetchBooks(); } }}>Delete</button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {filteredBooks.map(b => (
-                        <tr key={b._id}>
-                            <td><img src={b.cover} className="book-cover" alt="cover" /></td>
-                            <td>{b.name}</td>
-                            <td>{b.author}</td>
-                            <td>{b.code}</td>
-                            <td>{b.status}</td>
-                            <td>{b.studentName || "-"}</td>
-                            <td>{b.issueDate || "-"}</td>
-                            <td>{b.dueDate || "-"}</td>
-                            <td>₹{b.fine || 0}</td>
-                            <td>
-                                <button className="issue" onClick={() => handleIssue(b)}>Issue</button>
-                                <button className="return" onClick={() => handleReturn(b)}>Return</button>
-                                <button 
-    className="arrival-btn" 
-    style={{ backgroundColor: b.isNewArrival ? '#ef4444' : '#a855f7' }}
-    onClick={() => toggleNewArrival(b)}
->
-    {b.isNewArrival ? "Remove New" : "Set New"}
-</button>
+                ))}
+            </tbody>
+        </table>
 
-                                <button className="edit" onClick={() => handleEdit(b)}>Edit</button>
-                                <button className="delete" onClick={async () => { if(window.confirm("Delete?")) { await axios.delete(`${API_BASE_URL}/api/books/${b._id}`); fetchBooks(); } }}>Delete</button>
-                            </td>
-                        </tr>
-                        
-                    ))
-                    }
-                    
-                </tbody>
-            </table>
-
+        {/* Pagination Controls */}
+        <div style={{ textAlign: 'center', margin: '30px 0', color: 'white' }}>
+            <button 
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                style={{ marginRight: '10px', padding: '8px 15px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+            >
+                Previous
+            </button>
+            <span style={{ margin: '0 15px', fontSize: '16px' }}>
+                Page {currentPage} of {totalPages}
+            </span>
+            <button 
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                style={{ marginLeft: '10px', padding: '8px 15px', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+            >
+                Next
+            </button>
         </div>
+    </>
+)}
         </div>
     );
 };
