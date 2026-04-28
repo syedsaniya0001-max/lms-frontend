@@ -1,90 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 
 const NewArrivals = () => {
+  const [newBooks, setNewBooks] = useState([]);
+
+  const fetchNewArrivals = async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/books`);
+      console.log("All books fetched:", res.data);
+      
+      // CRITICAL FIX: Check if isNewArrival is truly (boolean or string "true")
+      const filtered = res.data.filter(book => {
+        const isNew = book.isNewArrival === true || String(book.isNewArrival) === "true";
+        console.log(`Book "${book.name}": isNewArrival=${book.isNewArrival} (type: ${typeof book.isNewArrival}) -> filter: ${isNew}`);
+        return isNew;
+      });
+      
+      console.log("Filtered new arrivals:", filtered);
+      setNewBooks(filtered);
+    } catch (err) {
+      console.error("Error fetching arrivals:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNewArrivals();
+    const interval = setInterval(fetchNewArrivals, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="new-arrivals-page">
       <style>{`
-        .new-arrivals-page {
-          background-image: url("Screenshot 2026-03-26 224303.png");
-          background-position: center;
-          background-attachment: fixed;
-          background-size: cover;
-          background-repeat: no-repeat;
-          min-height: 100vh;
-          margin: 0;
-          padding: 20px;
-          font-family: sans-serif;
-        }
-
-        .back-btn {
-          text-decoration: none;
-          color: antiquewhite;
-          font-weight: bold;
-          font-size: 18px;
-          display: inline-block;
-          margin-bottom: 20px;
-        }
-
-        h1 {
-          text-align: center;
-          color: antiquewhite;
-          font-weight: bolder;
-          text-decoration: underline;
-        }
-
-        p, pre {
-          border: 1px solid;
-          border-radius: 0 5px;
-          margin: 20px auto;
-          max-width: 300px;
-          text-align: center;
-          background-color: rgb(182, 215, 245);
-          color: black;
-          font-weight: bold;
-          font-family: monospace;
-          font-size: 15px;
-          padding: 10px;
-        }
-
-        .im {
-          display: flex;
-          justify-content: center;
-          transition: 0.5s;
-        }
-
-        .im:hover {
-          transform: scale(1.05);
-        }
-
-        img {
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
+        .new-arrivals-page { background-color: #1e40af; min-height: 100vh; padding: 20px; font-family: sans-serif; color: white; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid white; padding-bottom: 10px; }
+        .back-btn { text-decoration: none; color: antiquewhite; font-weight: bold; border: 1px solid antiquewhite; padding: 5px 10px; border-radius: 5px; }
+        h1 { text-align: center; color: antiquewhite; margin: 0; flex-grow: 1; }
+        .arrivals-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 20px; }
+        .book-card { background: white; color: #1e40af; padding: 15px; border-radius: 12px; width: 220px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .book-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
       `}</style>
 
-      <Link to="/" className="back-btn">← Back to Home</Link>
-
-      <h1>Easily Access the Newly Arrived Books!</h1>
-
-      <div className="im">
-        <img 
-          src="Gemini_Generated_Image_nqwoqynqwoqynqwo.png" 
-          alt="AI Book" 
-          height="300" 
-          width="250" 
-        />
+      <div className="header-row">
+        <Link to="/" className="back-btn">← Back</Link>
+        <h1>Newly Arrived Books</h1>
+        <div style={{ width: '80px' }}></div>
       </div>
 
-      <div className="container">
-        <p>Book Name: Artificial Intelligence</p>
-        <p>Arrived Date: 25-02-2026</p>
-        <pre 
-          onClick={() => alert('Successfully added to WishList✅')} 
-          style={{ cursor: 'pointer' }}
-        >
-          Add to WishList ❤️
-        </pre>
+      <div className="arrivals-grid">
+        {newBooks.length > 0 ? (
+          newBooks.map(book => (
+            <div className="book-card" key={book._id}>
+              <img src={book.cover} alt={book.name} />
+              <p><strong>{book.name}</strong></p>
+              <p style={{fontSize: '13px'}}>{book.author}</p>
+              <span style={{fontSize: '11px', color: 'gray'}}>Added: {book.addedDate || "Recently"}</span>
+            </div>
+          ))
+        ) : (
+          <p>No new arrivals yet. Set them in Admin.</p>
+        )}
       </div>
     </div>
   );

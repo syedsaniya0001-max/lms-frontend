@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { API_BASE_URL } from '../api/config';
 const AdminBooks = () => {
     const [books, setBooks] = useState([]);
     const [form, setForm] = useState({ name: '', author: '', code: '', img: '' });
@@ -8,30 +8,89 @@ const AdminBooks = () => {
 
     const fetchBooks = async () => {
         try {
-            const res = await axios.get('https://lms-backend-01-yn35.onrender.com/api/books');
-            setBooks(res.data);
-        } catch (err) { console.error("Error fetching books", err); }
+            const res = await axios.get(`${API_BASE_URL}/api/books`);
+            
+            // CRITICAL FIX: Normalize data on fetch so buttons don't reset on refresh
+            // Handle cases where isNewArrival might be missing, string, or boolean
+            const normalized = res.data.map(b => ({
+                ...b,
+                isNewArrival: b.isNewArrival === true || String(b.isNewArrival) === "true",
+                addedDate: b.addedDate || ""
+            }));
+            console.log("Normalized books:", normalized);
+            setBooks(normalized);
+        } catch (err) { 
+            console.error("Error fetching books:", err);
+        }
     };
 
-    useEffect(() => { fetchBooks(); }, []);
+   useEffect(() => { fetchBooks(); }, []);
 
-    const handleAddBook = async () => {
-        if (!form.name || !form.author || !form.code || !form.img) {
-            alert("Fill all fields & select image");
-            return;
+    const toggleNewArrival = async (book) => {
+        try {
+            console.log("Current book data:", book);
+            
+            const currentStatus = book.isNewArrival === true || String(book.isNewArrival) === "true";
+            console.log("Current status:", currentStatus, "Type:", typeof book.isNewArrival);
+            
+            const newStatus = !currentStatus;
+            const today = new Date().toLocaleDateString();
+
+            console.log("Sending to backend - isNewArrival:", newStatus, "addedDate:", newStatus ? today : "");
+
+            const res = await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
+                isNewArrival: newStatus,
+                addedDate: newStatus ? today : ""
+            });
+
+            console.log("Response from backend:", res.data);
+            
+            // DIAGNOSTIC: Check what's actually in the database
+            const diagnostic = await axios.get(`${API_BASE_URL}/api/books/${book._id}/diagnose`);
+            console.log("📊 DIAGNOSTIC CHECK - What's in MongoDB:", diagnostic.data);
+
+            // Update UI state immediately
+            setBooks(prev => prev.map(b => 
+                b._id === book._id ? { ...b, isNewArrival: newStatus, addedDate: newStatus ? today : "" } : b
+            ));
+            
+            alert(newStatus ? "✅ Added to New Arrivals" : "❌ Removed from New Arrivals");
+        } catch (err) { 
+            console.error("Error updating book:", err.response?.data || err.message);
+            alert("❌ Error updating: " + (err.response?.data?.error || err.message)); 
         }
-        await axios.post('https://lms-backend-01-yn35.onrender.com/api/books', {
+    };
+
+const handleAddBook = async () => {
+    if (!form.name || !form.author || !form.code || !form.img) {
+        alert("Fill all fields & select image");
+        return;
+    }
+
+    const addNewArrival = window.confirm("Add this to 'New Arrivals' page?");
+    const today = new Date().toLocaleDateString();
+
+    try {
+        await axios.post(`${API_BASE_URL}/api/books`, {
             name: form.name,
             author: form.author,
             code: form.code,
             cover: form.img,
-            status: "Available"
+            status: "Available",
+            isNewArrival: addNewArrival,
+            addedDate: addNewArrival ? today : ""
         });
+        
+        alert("✅ Book added successfully!");
         setForm({ name: '', author: '', code: '', img: '' });
         fetchBooks();
-    };
+    } catch (err) {
+        console.error("Error adding book:", err);
+        alert("Error adding book. Try again!");
+    }
+};
 
-   const handleIssue = async (book) => {
+const handleIssue = async (book) => {
     if (book.status === "Issued") return alert("Book already issued!");
     const student = prompt("Enter Student Name");
     if (!student) return;
@@ -41,7 +100,7 @@ const AdminBooks = () => {
     due.setDate(today.getDate() + 7);
 
     // 1. SAVE TO DATABASE HISTORY
-    await axios.post('https://lms-backend-01-yn35.onrender.com/api/history', {
+    await axios.post(`${API_BASE_URL}/api/history`, {
         type: "issue",
         book: book.name,
         student: student,
@@ -49,7 +108,7 @@ const AdminBooks = () => {
     });
 
     // 2. UPDATE BOOK STATUS
-    await axios.put(`https://lms-backend-01-yn35.onrender.com/api/books/${book._id}`, {
+    await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
         ...book,
         status: "Issued",
         studentName: student,
@@ -72,7 +131,7 @@ const AdminBooks = () => {
         }
 
         // 1. SAVE TO DATABASE HISTORY
-    await axios.post('https://lms-backend-01-yn35.onrender.com/api/history', {
+    await axios.post(`${API_BASE_URL}/api/history`, {
         type: "return",
         book: book.name,
         student: book.studentName,
@@ -80,7 +139,7 @@ const AdminBooks = () => {
     });
 
     // 2. UPDATE BOOK STATUS
-    await axios.put(`https://lms-backend-01-yn35.onrender.com/api/books/${book._id}`, {
+    await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
         ...book, status: "Available", studentName: "", issueDate: "", dueDate: "", fine: 0
     });
     fetchBooks();
@@ -91,7 +150,7 @@ const handleEdit = async (book) => {
   const newAuthor = prompt("New Author Name", book.author); // Don't miss this!
   
   if (newName && newAuthor) {
-    await axios.put(`https://lms-backend-01-yn35.onrender.com/api/books/${book._id}`, {
+    await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
       ...book,
       name: newName,
       author: newAuthor
@@ -124,7 +183,9 @@ const handleEdit = async (book) => {
                 .edit { background: #2563eb; } /* Blue Edit */
                 .delete { background: #ef4444; } /* Red Delete */
                 .add-btn { background: green; padding: 10px 20px; }
-            `}</style>
+                .arrival-btn { background: #a855f7; }
+                .arrival-btn:hover { opacity: 0.8; }
+`}</style>
 
             <h1>📚 BOOKS 📚</h1>
 
@@ -153,6 +214,8 @@ const handleEdit = async (book) => {
                 }} style={{ margin: '5px' }} />
                 <button className="add-btn" onClick={handleAddBook}>Add Book</button>
             </div>
+                <div style={{ backgroundColor: '#1e40af', minHeight: '100vh', padding: '20px', color: 'white' }}>
+
 
             <table>
                 <thead>
@@ -184,13 +247,26 @@ const handleEdit = async (book) => {
                             <td>
                                 <button className="issue" onClick={() => handleIssue(b)}>Issue</button>
                                 <button className="return" onClick={() => handleReturn(b)}>Return</button>
+                                <button 
+    className="arrival-btn" 
+    style={{ backgroundColor: b.isNewArrival ? '#ef4444' : '#a855f7' }}
+    onClick={() => toggleNewArrival(b)}
+>
+    {b.isNewArrival ? "Remove New" : "Set New"}
+</button>
+
                                 <button className="edit" onClick={() => handleEdit(b)}>Edit</button>
-                                <button className="delete" onClick={async () => { if(window.confirm("Delete?")) { await axios.delete(`https://lms-backend-01-yn35.onrender.com/api/books/${b._id}`); fetchBooks(); } }}>Delete</button>
+                                <button className="delete" onClick={async () => { if(window.confirm("Delete?")) { await axios.delete(`${API_BASE_URL}/api/books/${b._id}`); fetchBooks(); } }}>Delete</button>
                             </td>
                         </tr>
-                    ))}
+                        
+                    ))
+                    }
+                    
                 </tbody>
             </table>
+
+        </div>
         </div>
     );
 };

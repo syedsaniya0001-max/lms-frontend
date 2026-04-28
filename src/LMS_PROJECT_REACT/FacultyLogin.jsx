@@ -6,20 +6,24 @@ const FacultyLogin = () => {
   const formRef = useRef(null);
   const nameRef = useRef(null);
 
-  const handleLogin = (e) => {
-    // Check if the HTML5 validation (patterns, required) passes
-    if (formRef.current.checkValidity()) {
-      e.preventDefault(); // Prevent standard form submission
-      const facultyName = nameRef.current.value;
-      alert("Welcome, " + facultyName);
-      
-      // Navigate to the Faculty Main Page (Dashboard)
-      navigate('/faculty-dashboard'); 
-    } else {
-      // If invalid, the browser will automatically show validation errors
-    }
-  };
+const handleLogin = async (e) => {
+  e.preventDefault();
+  const facultyId = nameRef.current.value;
 
+  try {
+    const res = await axios.post('https://lms-backend-01-yn35.onrender.com/api/login', {
+      role: 'faculty',
+      id: facultyId
+    });
+
+    if (res.data.success) {
+      localStorage.setItem('facultyName', res.data.name);
+      navigate('/faculty-dashboard');
+    }
+  } catch (err) {
+    alert("Faculty ID not recognized. Please visit the Admin Office to add your profile to the system.");
+  }
+};
   const styles = `
     .login-body {
         margin: 0;

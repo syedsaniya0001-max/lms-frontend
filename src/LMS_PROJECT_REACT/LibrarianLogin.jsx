@@ -3,13 +3,26 @@ import { useNavigate } from 'react-router-dom';
 
 const LibrarianLogin = () => {
   const navigate = useNavigate();
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (e.currentTarget.checkValidity()) {
-      alert("Librarian has successfully Logged in");
+
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  const libName = e.target.querySelector('input[type="text"]').value;
+
+  try {
+    const res = await axios.post('https://lms-backend-01-yn35.onrender.com/api/login', {
+      role: 'librarian',
+      id: libName
+    });
+
+    if (res.data.success) {
+      localStorage.setItem('librarianName', res.data.name);
       navigate('/librarian-dashboard');
     }
-  };
+  } catch (err) {
+    alert("Librarian profile not active. Contact the System Administrator.");
+  }
+};
+ 
 
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: 'aliceblue' }}>

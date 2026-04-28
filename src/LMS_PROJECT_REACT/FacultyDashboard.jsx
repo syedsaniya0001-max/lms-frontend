@@ -24,14 +24,16 @@ const FacultyDashboard = () => {
   const styles = {
     facultyPage: {
       margin: 0,
-      padding: 0,
+      padding: '0.1px 0', // Prevents white gaps at very top/bottom
       minHeight: '100vh',
+      width: '100%',
       fontFamily: 'Arial, sans-serif',
       backgroundImage: 'url("book3.jpeg")',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
+      backgroundColor: '#1e40af', // Fallback
     },
     subtop: {
       display: "flex",
@@ -39,24 +41,25 @@ const FacultyDashboard = () => {
       alignItems: "center",
       border: "1px solid black",
       borderRadius: "10px",
-      margin: "55px 20px",
+      margin: "20px", 
       backgroundColor: "#1e40af",
       color: "white",
       position: "sticky",
-      top: "0px",
+      top: "10px",
       height: "80px",
       zIndex: 1000,
-      padding: "0 20px", // Standard padding instead of relative offsets
+      padding: "0 20px",
     },
     headerLeft: {
       display: "flex",
       alignItems: "center",
-      gap: "20px"
+      zIndex: 1001,
     },
     headerRight: {
       display: "flex",
       alignItems: "center",
-      gap: "40px" // Fixed gap between Notification and Help
+      gap: "40px",
+      zIndex: 1001,
     },
     bar: {
       cursor: "pointer",
@@ -64,11 +67,14 @@ const FacultyDashboard = () => {
       margin: 0
     },
     homeTitle: {
+      position: "absolute", // Absolute centering
+      left: "50%",
+      transform: "translateX(-50%)",
       cursor: "pointer",
       fontSize: "25px",
-      margin: "250%",
-      
-      whiteSpace: "nowrap"
+      margin: 0,
+      whiteSpace: "nowrap",
+      textAlign: "center"
     },
     notificationArea: {
       position: "relative",
@@ -82,8 +88,7 @@ const FacultyDashboard = () => {
       display: isNotificationOpen ? "block" : "none",
       position: "absolute",
       top: "140%",
-      left: "50%",
-      transform: "translateX(-50%)",
+      right: "0px", 
       backgroundColor: "white",
       color: "black",
       padding: "10px",
@@ -114,12 +119,12 @@ const FacultyDashboard = () => {
     },
     sidebarLink: {
       display: "block",
-      padding: "8px 20px", // Decreased padding for a tighter fit
+      padding: "8px 20px",
       textDecoration: "none",
       fontSize: "20px",
       color: "#1e40af",
       cursor: "pointer",
-      marginBottom: "8px", // Reduced gap to make it look less clumsy
+      marginBottom: "8px",
       transition: "0.2s",
     },
     menuclose: {
@@ -144,7 +149,7 @@ const FacultyDashboard = () => {
     main: {
       backgroundColor: "rgba(240, 248, 255, 0.8)",
       border: "2px ridge black",
-      marginTop: "50px",
+      marginTop: "30px",
       marginRight: "30px",
       marginBottom: "30px",
       marginLeft: isSidebarOpen ? "270px" : "30px",
@@ -156,12 +161,15 @@ const FacultyDashboard = () => {
 
   return (
     <div style={styles.facultyPage}>
-      {/* Header Bar with Fixed Ordering */}
+      {/* Header Bar */}
       <div style={styles.subtop}>
         <div style={styles.headerLeft}>
           <p style={styles.bar} onClick={toggleMenu}>☰</p>
-          <h2 style={styles.homeTitle} onClick={() => navigate('/faculty-dashboard')}>Faculty Dashboard</h2>
         </div>
+
+        <h2 style={styles.homeTitle} onClick={() => navigate('/faculty-dashboard')}>
+          Faculty Dashboard
+        </h2>
 
         <div style={styles.headerRight}>
           <div 
@@ -182,7 +190,7 @@ const FacultyDashboard = () => {
         </div>
       </div>
 
-      {/* Sidebar with tighter gaps */}
+      {/* Sidebar */}
       <div style={styles.sidebar}>
         <a style={styles.menuclose} onClick={toggleMenu}>☰</a>
         <div style={{ marginTop: '30px' }}>
@@ -196,6 +204,7 @@ const FacultyDashboard = () => {
         </div>
       </div>
 
+      {/* Main Content */}
       <div style={styles.main}>
         <div style={{ fontSize: '25px' }}>
           <p>The Faculty Home Page serves as the primary interface and entry point for faculty members after successful login into the system. It is designed as a centralized dashboard that provides an overview of the user’s interaction with the library system and ensures easy access to various functionalities.</p>
@@ -204,22 +213,16 @@ const FacultyDashboard = () => {
         
         <div style={{ fontSize: '25px' }}>
           <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Purpose</h3>
-          <p>The main purpose of the Faculty Home Page is to present important information in a clear and organized manner, allowing faculty members to efficiently manage their library-related activities. It reduces navigation complexity by offering quick access to frequently used features.</p>
+          <p>The main purpose of the Faculty Home Page is to present important information in a clear and organized manner, allowing faculty members to efficiently manage their library-related activities.</p>
 
           <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Dashboard Overview</h3>
-          <p>The home page displays a summary of key information such as the number of books currently borrowed, due dates, and active reservations. This helps faculty members quickly understand their current status without accessing multiple sections.</p>
-        
+          <p>The home page displays a summary of key information such as the number of books currently borrowed, due dates, and active reservations.</p>
 
+          <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Notifications and Alerts</h3>
+          <p>The system provides a notification section that informs faculty about important updates such as upcoming due dates and overdue books.</p>
 
-        <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Notifications and Alerts</h3>
-          <p>The system provides a notification section that informs faculty about important updates such as upcoming due dates, overdue books, and availability of reserved books. These alerts help users take timely actions and avoid penalties.</p>
-
-
-           <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Quick Access Features</h3>
-          <p>The home page includes quick access options or shortcuts to major functionalities such as searching books, viewing borrowing history, recommending new books, and accessing profile details. This improves usability and saves time.</p>
-
-
-
+          <h3 style={{ color: '#1e40af', fontSize: '30px' }}>Quick Access Features</h3>
+          <p>The home page includes quick access options or shortcuts to major functionalities such as searching books and viewing borrowing history.</p>
         </div>
 
         <hr />
@@ -261,7 +264,8 @@ const FacultyDashboard = () => {
               border: 'none', 
               cursor: 'pointer',
               fontSize: '20px',
-              marginLeft: '40%'
+              display: 'block',
+              margin: '0 auto' // Centered button
             }}>Submit</button>
           </form>
         </div>
