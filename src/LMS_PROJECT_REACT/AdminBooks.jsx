@@ -8,6 +8,8 @@ const AdminBooks = () => {
 
     const fetchBooks = async () => {
         try {
+            // const res = await axios.get(`${API_BASE_URL}/api/books`);
+            // Ensure you use ` (backticks) and NOT ' (single quotes)
             const res = await axios.get(`${API_BASE_URL}/api/books`);
             
             // CRITICAL FIX: Normalize data on fetch so buttons don't reset on refresh
@@ -39,28 +41,27 @@ const AdminBooks = () => {
             console.log("Sending to backend - isNewArrival:", newStatus, "addedDate:", newStatus ? today : "");
 
             const res = await axios.put(`${API_BASE_URL}/api/books/${book._id}`, {
-                isNewArrival: newStatus,
-                addedDate: newStatus ? today : ""
+         isNewArrival: newStatus,
+        addedDate: newStatus ? today : ""
             });
+          
 
             console.log("Response from backend:", res.data);
             
             // DIAGNOSTIC: Check what's actually in the database
-            const diagnostic = await axios.get(`${API_BASE_URL}/api/books/${book._id}/diagnose`);
-            console.log("📊 DIAGNOSTIC CHECK - What's in MongoDB:", diagnostic.data);
+            // const diagnostic = await axios.get(`${API_BASE_URL}/api/books/${book._id}/diagnose`);
+            // console.log("📊 DIAGNOSTIC CHECK - What's in MongoDB:", diagnostic.data);
 
             // Update UI state immediately
-            setBooks(prev => prev.map(b => 
-                b._id === book._id ? { ...b, isNewArrival: newStatus, addedDate: newStatus ? today : "" } : b
-            ));
-            
-            alert(newStatus ? "✅ Added to New Arrivals" : "❌ Removed from New Arrivals");
-        } catch (err) { 
-            console.error("Error updating book:", err.response?.data || err.message);
-            alert("❌ Error updating: " + (err.response?.data?.error || err.message)); 
-        }
-    };
-
+          setBooks(prev => prev.map(b => 
+            b._id === book._id ? { ...b, isNewArrival: newStatus, addedDate: newStatus ? today : "" } : b
+        ));
+        
+        alert(newStatus ? "✅ Added" : "❌ Removed");
+    } catch (err) { 
+        console.error("Error:", err);
+    }
+};
 const handleAddBook = async () => {
     if (!form.name || !form.author || !form.code || !form.img) {
         alert("Fill all fields & select image");
