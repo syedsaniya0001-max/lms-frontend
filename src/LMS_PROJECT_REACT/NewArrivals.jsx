@@ -13,6 +13,7 @@ const NewArrivals = () => {
       
       // CRITICAL FIX: Check if isNewArrival is truly (boolean or string "true")
       const filtered = res.data.filter(book => {
+        
         const isNew = book.isNewArrival === true || String(book.isNewArrival) === "true";
         console.log(`Book "${book.name}": isNewArrival=${book.isNewArrival} (type: ${typeof book.isNewArrival}) -> filter: ${isNew}`);
         return isNew;
