@@ -200,7 +200,7 @@ const handleEdit = async (book) => {
             <style>{`
                 h1 { text-align: center; border: 3px solid white; color: aliceblue; background-color: #1e40af; padding: 20px; font-size: 24px; }
                 .main-dash { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
-                .container { border: 3px solid black; padding: 20px; text-align: center; background-color: aliceblue; width: 200px; border-radius: 8px; transition: 0.3s; }
+                .container { border: 3px solid black; padding: 20px; text-align: center; background-color: aliceblue; width: 200px; border-radius: 8px; transition: 0.3s;color: black; }
                 .container:hover { transform: scale(1.05); }
                 table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
                 th, td { border: 1px solid #1e40af; padding: 10px; text-align: center; color: #1e40af; font-size: 14px; }
