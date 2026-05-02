@@ -29,7 +29,7 @@ const LibrarianLogin = () => {
       <style>{`
         fieldset { padding:35px; border:2px solid #1e40af; border-radius: 10px; background-color: white; width: 400px; }
         .login-btn { width:40%; display:block; padding:10px; margin:20px auto; background-color:#1e40af; color:white; border: none; border-radius:10px; cursor:pointer; }
-        input { width:100%; padding:5px; margin-top:5px; border:1px solid black; border-radius: 5px; }
+        input { width:100%; padding:5px; margin-top:5px; border:1px solid black; border-radius: 5px; background-color: #fff; color: #000; }
       `}</style>
       <div style={{ width: '50%' }}><img src="book4.jpeg" style={{ width: '100%', height: '100vh', borderRadius: '15px' }} alt="Login" /></div>
       <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -153,14 +153,14 @@ const LibrarianDashboard = () => {
         body { font-family: Arial, sans-serif; background-color: #1e40af; margin: 0; padding: 20px; color: #000; }
         h1 { text-align: center; border: 3px solid white; color: aliceblue; background-color: #1e40af; padding: 20px; cursor: pointer; }
         .main { display: flex; justify-content: center; gap: 30px; margin-top: 20px; margin-bottom: 40px; }
-        .container { border: 3px solid black; padding: 20px; text-align: center; background-color: aliceblue; width: 200px; border-radius: 8px; transition: transform 0.3s; }
+        .container { border: 3px solid black; padding: 20px; text-align: center; background-color: aliceblue; width: 200px; border-radius: 8px; transition: transform 0.3s; color: black; }
         .container:hover { transform: scale(1.05); }
         h2 { text-align: center; color:#1e40af; }
         .search-bar-container { text-align: right; margin-bottom: 30px; }
-        #searchInput { width: 300px; padding: 8px; font-size: 16px; border: 2px solid #1e40af; border-radius: 5px; }
+        #searchInput { width: 300px; padding: 8px; font-size: 16px; border: 2px solid #1e40af; border-radius: 5px; background-color: #fff; color: #000; }
         
         .add-book-container { text-align: center; margin-bottom: 30px; background: aliceblue; padding: 20px; border-radius: 8px; }
-        .add-book-container input { padding: 8px; margin: 5px; border: 2px solid #1e40af; border-radius: 5px; }
+        .add-book-container input { padding: 8px; margin: 5px; border: 2px solid #1e40af; border-radius: 5px; background-color: #fff; color: #000; }
         .add-book-container button { padding: 8px 16px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }

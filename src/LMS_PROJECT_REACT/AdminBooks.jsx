@@ -246,9 +246,9 @@ const handleEdit = async (book) => {
             </div>
 
             <div style={{ textAlign: 'center', marginBottom: '30px', background: 'aliceblue', padding: '20px', borderRadius: '10px' }}>
-    <input placeholder="Book Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
-    <input placeholder="Author Name" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
-    <input placeholder="Book Code" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ margin: '5px', padding: '8px' }} />
+    <input placeholder="Book Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ margin: '5px', padding: '8px', backgroundColor: 'white' , color: 'black'}} />
+    <input placeholder="Author Name" value={form.author} onChange={e => setForm({ ...form, author: e.target.value })} style={{ margin: '5px', padding: '8px' ,backgroundColor: 'white', color: 'black'}} />
+    <input placeholder="Book Code" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ margin: '5px', padding: '8px',backgroundColor: 'white', color: 'black' }} />
     
     <input type="file" onChange={e => {
         const reader = new FileReader();

@@ -233,7 +233,7 @@ const FacultyDashboard = () => {
             <label>Enter Your Name: </label><br/>
             <input 
               type="text" 
-              style={{ fontSize: '20px', width: '300px', height: '35px', marginBottom: '15px' }} 
+              style={{ fontSize: '20px', width: '300px', height: '35px', marginBottom: '15px', backgroundColor: 'white', color: 'black' }} 
               value={name} 
               onChange={(e) => setName(e.target.value)} 
               required 
@@ -242,7 +242,7 @@ const FacultyDashboard = () => {
             <label>Enter Your Department:</label><br/>
             <input 
               type="text" 
-              style={{ fontSize: '20px', width: '300px', height: '35px', marginBottom: '15px' }} 
+              style={{ fontSize: '20px', width: '300px', height: '35px', marginBottom: '15px', backgroundColor: 'white', color: 'black' }} 
               value={dept} 
               onChange={(e) => setDept(e.target.value)} 
               required 
@@ -250,7 +250,7 @@ const FacultyDashboard = () => {
             <br />
             <label>Give Feedback:</label><br/>
             <textarea 
-              style={{ width: '95%', height: '100px', fontSize: '20px', padding: '10px' }} 
+              style={{ width: '95%', height: '100px', fontSize: '20px', padding: '10px', backgroundColor: 'white', color: 'black' }} 
               value={feedback} 
               onChange={(e) => setFeedback(e.target.value)} 
               required 

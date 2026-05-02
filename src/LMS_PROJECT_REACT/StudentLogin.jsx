@@ -15,7 +15,7 @@ const StudentLogin = () => {
     fieldset { padding: 35px; border: 2px solid #1e40af; border-radius: 10px; background-color: white; }
     legend { font-size: 20px; font-weight: bold; color: #000; }
     label { color: #000; display: block; margin-top: 10px; }
-    input, .sele { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid black; border-radius: 5px; box-sizing: border-box; }
+    input, .sele { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid black; border-radius: 5px; box-sizing: border-box;background-color: #fff; color: #000; }
     button { width: 40%; display: block; padding: 10px; margin: 20px auto 0 auto; background-color: #1e40af; color: white; border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; }
     button:hover { background-color: #1e40af; border-radius: 20px; }
   `;

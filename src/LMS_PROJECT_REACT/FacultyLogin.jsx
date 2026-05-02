@@ -76,6 +76,8 @@ const handleLogin = async (e) => {
         border: 1px solid black;
         border-radius: 5px;
         box-sizing: border-box;
+        background-color: #fff;
+        color: #000;
     }
     .login-btn {
         width: 45%;
