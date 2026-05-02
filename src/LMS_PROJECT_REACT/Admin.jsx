@@ -29,7 +29,7 @@ const Admin = () => {
         fieldset { padding: 35px; border: 2px solid #1e40af; border-radius: 10px; background-color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         legend { font-size: 20px; font-weight: bold; color: #1e40af; padding: 0 10px; }
         label { display: block; margin-top: 10px; font-weight: bold; }
-        input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid black; border-radius: 5px; box-sizing: border-box; }
+        input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid black; border-radius: 5px; box-sizing: border-box;background-color: #f0f0f0; }
         button { width: 40%; display: block; padding: 10px; margin: 20px auto 10px auto; background-color: #1e40af; color: white; border: none; border-radius: 10px; font-weight: bold; transition: 0.3s; cursor: pointer; }
         button:hover { background-color: #1e3a8a; border-radius: 20px; }
         .back-link { margin-top: 15px; color: #1e40af; text-decoration: none; font-size: 14px; }
