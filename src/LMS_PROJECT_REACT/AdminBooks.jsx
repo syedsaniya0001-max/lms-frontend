@@ -320,7 +320,7 @@ const handleEdit = async (book) => {
             <button 
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                style={{ marginRight: '10px', padding: '8px 15px',color:'black', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                style={{ marginRight: '10px', padding: '8px 15px',color:'black',background:'white', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
             >
                 Previous
             </button>
