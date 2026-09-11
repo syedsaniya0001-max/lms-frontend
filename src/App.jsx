@@ -18,13 +18,15 @@
 // import Controlled from "./Components/Controlled";
 // import Controlled1 from "./Components/COntrolled1";
 // // import Controlled2 from "./Components/Controlled2";
-import Main from "./LMS_PROJECT_REACT/Main";
+// import Main from "./LMS_PROJECT_REACT/Main";
+import Mainc from "./COLLEGE";
 function App() {
 
   return (
 
     <>
-    <Main/>
+    <Mainc/>
+        {/* <Main/> */}
    
       {/* <Rea/> */}
 

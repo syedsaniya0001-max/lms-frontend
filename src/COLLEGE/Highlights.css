@@ -1,0 +1,101 @@
+.highlight-section {
+    padding: 80px 50px;
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(37, 99, 235, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 10% 80%,
+            rgba(124, 58, 237, 0.08),
+            transparent 30%
+        ),
+        #f7faff;
+}
+.highlight-section h2{
+    background: linear-gradient( #1e3a8a, #2563eb);
+    -webkit-text-fill-color:transparent;
+    background-clip: text;
+    font-size: 45px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: transform 0.9s ease;
+}
+.highlight-section h2:hover{
+    transform: scale(1.2);
+    
+}
+.highlight-intro{
+    color:#333;
+    font-size:20px;
+    max-width: 900px;
+    margin:0 auto 50px;
+}
+.highlight-cards{
+    display:grid;
+    grid-template-columns: repeat(6,1fr);
+     gap:20px;
+    max-width:5000px;
+    margin: auto;
+}
+.highlight-card{
+    border:1px solid #e6eef8;
+    background: #fff;
+    padding:30px;
+    border-radius: 20px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    /* transition-duration: 1.5s;
+    transition-timing-function: ease;; */
+     transition:1.2s ease;
+
+
+}
+.highlight-card:hover{
+    transform:translateY(-100px);
+    box-shadow:0 20px 35px rgba(0,0,0,0.15);
+}
+.icon{
+    width:85px;
+    height: 85px;
+    margin:0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    background: linear-gradient( #1e3a8a, #2563eb);
+}
+.highlight-card h3{
+    font-size:24px;
+    margin-bottom:15px;
+    color:#222;
+}
+.highlight-card p{
+    font-size:17px;
+    color:#666;
+    line-height:1.7;
+}
+/* 
+@media(max-width:992px){
+    .highlight-cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px){
+    .highlight-section{
+        padding:60px 20px;
+    }
+
+    .highlight-section h2{
+        font-size:35px;
+    }
+
+    .highlight-cards{
+        grid-template-columns:1fr;
+    }
+} */

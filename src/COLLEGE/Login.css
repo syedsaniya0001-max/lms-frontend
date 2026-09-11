@@ -1,0 +1,147 @@
+.login-section {
+    padding: 80px 50px;
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(37, 99, 235, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(124, 58, 237, 0.08),
+            transparent 30%
+        ),
+        #f7faff;
+}
+.login-section h1{
+    font-size:45px;
+    margin-bottom:35px;
+    background:linear-gradient( #1e3a8a, #2563eb);
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    /* color:transparent; */
+    
+        transition: transform 0.9s ease;
+        font-weight: bold;
+
+}
+
+.login-section h1:hover{
+    transform: scale(1.2);
+    }
+
+.login-text{
+     color:#333;
+    font-size:20px;
+    margin-bottom: 30px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.card{
+    height:400px;
+}
+
+.card-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transition:transform 0.8s;
+    transform-style:preserve-3d;
+}
+
+.card:hover .card-inner{
+    transform:rotateY(180deg);
+}
+
+.card-front, .card-back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:20px;
+    backface-visibility:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card-front{
+    background:linear-gradient(150deg, #485476, #2563eb);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.card-front h3{
+    font-size:60px;
+    margin-bottom:20px;
+    color:White;
+}
+
+.card-front h2{
+    font-size:28px;
+    color:White ;
+     /* background:none !important;
+    -webkit-text-fill-color:#fff !important;*/
+}
+
+.card-back{
+    background:white;
+    color:#333;
+    transform:rotateY(180deg);
+    padding:30px;
+    text-align:left;
+}
+
+.card-back h3{
+    text-align:center;
+     background: linear-gradient(to right, #1e3a8a, #2563eb);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom:20px;
+}
+
+.card-back ol{
+    padding-left:20px;
+}
+
+.card-back li{
+    margin-bottom:15px;
+    line-height:1.6;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    transition:.4s;
+}
+
+/* Responsive */
+
+@media(max-width:1100px){
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .login-section{
+        padding:60px 20px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .login-section h1{
+        font-size:35px;
+    }
+}

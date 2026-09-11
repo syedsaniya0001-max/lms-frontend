@@ -1,0 +1,451 @@
+.faculty-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+ background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(37, 99, 235, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(124, 58, 237, 0.08),
+            transparent 30%
+        ),
+        #f7faff;;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* TITLE */
+
+.faculty-title {
+    margin-bottom: 25px;
+
+    background: linear-gradient(
+        to right,
+        #1e3a8a,
+        #2563eb
+    );
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-size: 42px;
+    font-weight: bold;
+}
+
+
+/* BLACKBOARD */
+
+.faculty-blackboard {
+   
+    width: 850px;
+    height: 460px;
+    
+
+    background: #000;
+
+    border: 18px solid #8b5a2b;
+    border-radius: 12px;
+
+    position: relative;
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 25px rgba(255,255,255,.08),
+        0 15px 30px rgba(0,0,0,.35);
+}
+
+
+/* CHALK TEXT */
+
+.faculty-chalk-text {
+    position: absolute;
+
+    top: 130px;
+
+    width: 100%;
+
+    text-align: center;
+
+    color: white;
+
+    font-size: 52px;
+
+    font-family: "Comic Sans MS", cursive;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        1px 1px 2px rgba(255,255,255,.35),
+        -1px -1px 2px rgba(255,255,255,.2);
+
+    z-index: 2;
+}
+
+
+/* DUSTER */
+
+.faculty-duster {
+    position: absolute;
+
+    top: 125px;
+    left: -120px;
+
+    width: 110px;
+    height: 42px;
+
+    background: #d8b48a;
+
+    border-radius: 8px;
+
+    z-index: 10;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.35);
+}
+
+
+.faculty-duster::before {
+    content: "";
+
+    position: absolute;
+
+    bottom: -8px;
+    left: 0;
+
+    width: 100%;
+    height: 8px;
+
+    background: #444;
+
+    border-radius: 0 0 6px 6px;
+}
+
+
+.faculty-duster.move {
+    animation: moveDuster 2.2s linear forwards;
+}
+
+
+@keyframes moveDuster {
+
+    from {
+        left: -120px;
+    }
+
+    to {
+        left: 760px;
+    }
+
+}
+
+
+/* CHALK DUST */
+
+.faculty-duster.move::after {
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    left: -18px;
+    top: 10px;
+
+    opacity: .6;
+
+    filter: blur(6px);
+
+    animation: dust .5s infinite;
+}
+
+
+@keyframes dust {
+
+    from {
+        transform: scale(.5);
+        opacity: .7;
+    }
+
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+
+}
+
+
+/* CHALK TRAY */
+
+.faculty-chalk-tray {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 100%;
+    height: 18px;
+
+    background: #6d4728;
+}
+
+
+.faculty-chalk {
+    position: absolute;
+
+    left: 35px;
+    top: -10px;
+
+    width: 45px;
+    height: 10px;
+
+    background: white;
+
+    border-radius: 5px;
+}
+
+
+/* PORTAL */
+
+.faculty-portal {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    animation: fadeIn 1s ease;
+
+    box-sizing: border-box;
+}
+
+
+.faculty-portal h2 {
+    color: white;
+
+    margin-bottom: 25px;
+
+    font-size: 34px;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* INPUTS */
+
+.faculty-portal input {
+    display: block;
+
+    width: 300px;
+
+    padding: 12px;
+
+    margin: 8px auto;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    box-sizing: border-box;
+}
+
+
+/* BUTTONS */
+
+.faculty-portal-btn {
+    width: 220px;
+
+    padding: 14px;
+
+    margin: 10px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    background: white;
+
+    color: #2563eb;
+
+    font-weight: bold;
+
+    transition: .3s;
+}
+
+
+.faculty-portal-btn:hover {
+    background: #2563eb;
+
+    color: white;
+
+    transform: scale(1.05);
+}
+
+
+/* LOGIN / SIGNUP TEXT */
+
+.faculty-switch-text {
+    color: white;
+
+    font-size: 15px;
+
+    margin-top: 5px;
+
+    text-align: center;
+}
+
+
+.faculty-link-btn {
+    border: none;
+
+    background: none;
+
+    color: #60a5fa;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-left: 5px;
+
+    text-decoration: underline;
+}
+
+
+.faculty-link-btn:hover {
+    color: white;
+}
+
+
+/* BACK BUTTON */
+
+.faculty-back-btn {
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+}
+
+
+.faculty-back-btn:hover {
+    color: #60a5fa;
+}
+
+
+/* SIGNUP FORM */
+
+.signup-portal {
+    justify-content: center;
+}
+
+
+/* ANIMATION */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+
+    .faculty-blackboard {
+        width: 90%;
+        height: 420px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .faculty-title {
+        font-size: 34px;
+    }
+
+    .faculty-blackboard {
+        height: 430px;
+        border-width: 10px;
+    }
+
+    .faculty-chalk-text {
+        font-size: 38px;
+    }
+
+    .faculty-portal input {
+        width: 80%;
+    }
+
+}
+.signup-portal form {
+    width: 650px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+}
+
+.signup-portal input {
+    width: 100%;
+    margin: 0;
+    padding: 11px 14px;
+    box-sizing: border-box;
+}
+
+.signup-portal .faculty-portal-btn {
+    grid-column: 1 / 3;
+    justify-self: center;
+    margin-top: 8px;
+}
+
+.signup-portal .faculty-switch-text {
+    grid-column: 1 / 3;
+}
+
+.signup-portal .faculty-back-btn {
+    grid-column: 1 / 3;
+}

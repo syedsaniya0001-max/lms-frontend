@@ -1,0 +1,396 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   SIGNUP PAGE
+========================= */
+
+.signup-page {
+    min-height: 100vh;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(37, 99, 235, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(124, 58, 237, 0.08),
+            transparent 30%
+        ),
+        #f7faff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   SIGNUP CARD
+========================= */
+
+.signup-card {
+    width: 450px;
+
+    max-width: 100%;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 18px;
+
+    border:
+        1px solid #e2e8f0;
+
+    box-shadow:
+        0 15px 40px
+        rgba(30, 58, 138, 0.12);
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.signup-card h2 {
+    text-align: center;
+
+    margin-bottom: 8px;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    color: #1e3a8a;
+}
+
+
+/* =========================
+   INTRO
+========================= */
+
+.signup-intro {
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    margin-bottom: 25px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.signup-card input,
+.signup-card select {
+    display: block;
+
+    width: 100%;
+
+    height: 48px;
+
+    padding:
+        12px 13px;
+
+    margin-bottom: 15px;
+
+    border:
+        1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    outline: none;
+
+    color: #333;
+
+    background: white;
+
+    -family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* =========================
+   SELECT
+========================= */
+font
+.signup-card select {
+    cursor: pointer;
+
+    appearance: auto;
+}
+
+
+/* =========================
+   FOCUS
+========================= */
+
+.signup-card input:focus,
+.signup-card select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 5px
+        rgba(37, 99, 235, 0.2);
+}
+
+
+/* =========================
+   REGISTER BUTTON
+========================= */
+
+.signup-card form button {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 3px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #1e3a8a;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* =========================
+   REGISTER BUTTON HOVER
+========================= */
+
+.signup-card form button:hover {
+    background: #2563eb;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 7px 15px
+        rgba(30, 58, 138, 0.25);
+}
+
+
+/* =========================
+   ACCOUNT TEXT
+========================= */
+
+.account-text {
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #555;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   LOGIN LINK
+========================= */
+
+.login-link {
+    border: none;
+
+    background: none;
+
+    color: #2563eb;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-left: 5px;
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   LOGIN LINK HOVER
+========================= */
+
+.login-link:hover {
+    color: #1e3a8a;
+}
+
+
+/* =========================
+   BACK LOGIN BUTTON
+========================= */
+
+.back-login-btn {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 15px;
+
+    border:
+        1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: #475569;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+/* =========================
+   BACK LOGIN HOVER
+========================= */
+
+.back-login-btn:hover {
+    background: #eff6ff;
+
+    color: #1e3a8a;
+
+    border-color: #2563eb;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    .signup-page {
+        min-height: 100vh;
+
+        align-items: flex-start;
+
+        padding:
+            20px;
+
+        overflow-y: auto;
+    }
+
+
+    .signup-card {
+        width: 100%;
+
+        padding:
+            30px 25px;
+
+        margin:
+            10px 0 20px;
+    }
+
+
+    .signup-card h2 {
+        font-size: 26px;
+    }
+
+
+    .signup-intro {
+        font-size: 14px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .signup-card input,
+    .signup-card select {
+        height: 46px;
+
+        padding:
+            11px;
+
+        font-size: 15px;
+    }
+
+
+    .signup-card form button {
+        padding: 13px;
+
+        font-size: 16px;
+    }
+}
+
+
+/* =========================
+   VERY SMALL MOBILE
+========================= */
+
+@media (max-width: 360px) {
+
+    .signup-card {
+        padding:
+            25px 20px;
+    }
+
+
+    .signup-card h2 {
+        font-size: 24px;
+    }
+
+
+    .signup-card input,
+    .signup-card select {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,236 @@
+.admin-section{
+    min-height:100vh;
+    padding-top:60px;
+     background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(37, 99, 235, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(124, 58, 237, 0.08),
+            transparent 30%
+        ),
+        #f7faff;
+    text-align:center;
+    overflow:hidden;
+}
+
+/* Heading */
+
+.admin-title h1{
+    font-size:40px;
+    color:#1e3a8a;
+    margin-bottom:10px;
+}
+
+.admin-title p{
+    font-size:18px;
+    color:#64748b;
+    margin-bottom:40px;
+}
+
+
+/* Laptop */
+
+.laptop{
+    width:800px;
+    margin:auto;
+    perspective:1200px;
+}
+
+
+/* Screen */
+
+.laptop-screen{
+    width:100%;
+    height:480px;
+    background:#111827;
+    border:12px solid #1f2937;
+    border-radius:18px 18px 8px 8px;
+    position:relative;
+    transform-origin:bottom;
+    
+    /* Automatically opens */
+    animation:laptopOpen 1.5s ease forwards;
+
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+}
+
+
+/* Screen content */
+
+.screen-content{
+    width:100%;
+    height:100%;
+    background:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.screen-content h2{
+    font-size:30px;
+    color:#1e3a8a;
+    margin-bottom:5px;
+}
+
+.admin-welcome{
+    font-size:18px;
+    color:#64748b;
+    margin-bottom:20px;
+}
+
+
+/* Form */
+
+.admin-form{
+    width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.admin-form input{
+    padding:12px 15px;
+    border:1px solid #cbd5e1;
+    border-radius:7px;
+    font-size:15px;
+    outline:none;
+}
+
+.admin-form input:focus{
+    border-color:#2563eb;
+}
+
+.admin-form button{
+    padding:12px;
+    border:none;
+    border-radius:7px;
+    background:#1e3a8a;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.admin-form button:hover{
+    background:#2563eb;
+    transform:translateY(-2px);
+}
+
+.admin-form p{
+    font-size:14px;
+    color:#64748b;
+}
+
+.admin-form span{
+    color:#2563eb;
+    font-weight:bold;
+    cursor:pointer;
+    margin-left:5px;
+}
+
+
+/* Laptop Base */
+
+.laptop-base{
+    width:105%;
+    height:35px;
+    margin-left:-2.5%;
+    background:#cbd5e1;
+    border-radius:0 0 20px 20px;
+    position:relative;
+    box-shadow:0 8px 15px rgba(0,0,0,0.2);
+}
+
+
+/* Keyboard */
+
+.keyboard{
+    width:55%;
+    height:15px;
+    background:#94a3b8;
+    border-radius:4px;
+    position:absolute;
+    left:22%;
+    top:6px;
+}
+
+
+/* Touchpad */
+
+.touchpad{
+    width:80px;
+    height:6px;
+    background:#64748b;
+    border-radius:5px;
+    position:absolute;
+    left:45%;
+    bottom:5px;
+}
+
+
+/* Laptop opening animation */
+
+@keyframes laptopOpen{
+
+    0%{
+        transform:rotateX(-90deg);
+        opacity:0;
+    }
+
+    60%{
+        transform:rotateX(15deg);
+        opacity:1;
+    }
+
+    100%{
+        transform:rotateX(0deg);
+        opacity:1;
+    }
+
+}
+
+
+/* Responsive */
+
+@media(max-width:900px){
+
+    .laptop{
+        width:90%;
+    }
+
+    .laptop-screen{
+        height:420px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .admin-section{
+        padding:80px 15px 30px;
+    }
+
+    .admin-title h1{
+        font-size:30px;
+    }
+
+    .laptop-screen{
+        height:400px;
+        border-width:8px;
+    }
+
+    .admin-form{
+        width:75%;
+    }
+
+    .screen-content h2{
+        font-size:24px;
+    }
+
+}
